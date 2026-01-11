@@ -67,7 +67,7 @@ Configurações de conta e segurança, incluindo alteração de senha, e-mail e 
 
 Stack Tecnológica
 
-Back-end: Laravel 10, JWT, Policies & Gates, MySQL, Migrations & Seeders.
+Back-end: Laravel 12, JWT, Policies & Gates, MySQL, Migrations & Seeders.
 
 Front-end: Vue 3 + Vuetify 3, Vue Router, Axios.
 
