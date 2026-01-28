@@ -7,15 +7,15 @@
           v-model="form.name"
           label="Matricula"
           :counter="10"
-          :rules="nameRules"
+          :rules="matriculaRules"
           variant="solo"
           class="mb-3"
           required
         />
         <v-text-field
-          v-model="form.email"
+          v-model="form.senha"
           label="senha"
-          :rules="emailRules"
+          :rules="passwordRules"
           variant="solo"
           class="mb-3"
           required
@@ -61,21 +61,21 @@ import { ref } from 'vue'
 const isValid = ref(false)
 const form = ref({
   name: '',
-  email: '',
+  senha: '',
   select: null,
   checkbox: false,
 })
 
 const items = ['aluno', 'professor', 'administrador']
 
-const nameRules = [
+const matriculaRules = [
   (v: string) => !!v || 'Matricula é obrigatória',
   (v: string) => v.length <= 10 || 'Máximo de 10 caracteres',
 ]
 
-const emailRules = [
+const passwordRules = [
   (v: string) => !!v || 'Senha é obrigatória',
-  (v: string) => /.+@.+\..+/.test(v) || 'E-mail inválido',
+  (v: string) => v.length >= 6 || 'Senha deve ter pelo menos 6 caracteres',
 ]
 
 const selectRules = [
