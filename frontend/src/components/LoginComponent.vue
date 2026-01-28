@@ -23,7 +23,7 @@
         <v-select
           v-model="form.select"
           :items="items"
-          label="oque voce é"
+          label="Função"
           :rules="selectRules"
           variant="solo"
           class="mb-3"
