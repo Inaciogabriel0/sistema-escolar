@@ -14,7 +14,7 @@
              color="white"
              size="large"
              >
-                 Login
+                Login
              </v-btn>
             </div>
          </v-app-bar>
@@ -26,14 +26,14 @@
             location="left"
             >
              <v-list density="compact" nav>
-        <v-list-item
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.route"
-          :prepend-icon="item.icon"
-          :title="item.title"
-          @click="drawer = false"
-        >
+            <v-list-item
+                v-for="item in menuItems"
+                :key="item.title"
+                :to="item.route"
+                :prepend-icon="item.icon"
+                :title="item.title"
+                @click="drawer = false"
+             >
         </v-list-item>
       </v-list>
 
@@ -51,9 +51,8 @@ const drawer = ref(false)
 
 const menuItems = ref([
   { title: 'Início', icon: 'mdi-home', route: '/' },
-  { title: 'Alunos', icon: 'mdi-account-group', route: '/alunos' },
   { title: 'Professores', icon: 'mdi-account-tie', route: '/professores' },
-  { title: 'Turmas', icon: 'mdi-google-classroom', route: '/turmas' },
+  { title: 'Turma', icon: 'mdi-google-classroom', route: '/turma' },
   { title: 'Horários', icon: 'mdi-calendar-clock', route: '/horarios' },
   { title: 'Notas', icon: 'mdi-clipboard-text', route: '/notas' },
   { title: 'Configurações', icon: 'mdi-cog', route: '/configuracoes' },
