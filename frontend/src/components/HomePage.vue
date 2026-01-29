@@ -8,7 +8,6 @@
             <div class="butao_login">
              <v-btn
              @click="$router.push({ name: 'login' })"
-             icon="mdi-login"
              color="white"
              size="large"
              >
