@@ -2,9 +2,9 @@
   <v-container fluid class="d-flex align-center justify-center" style="min-height: 100vh; background: linear-gradient(135deg, #FFEE58 0%, #0091EA 100%);">
     <v-card class="pa-12 login-card-animate" elevation="10" max-width="600" width="100%" rounded="lg">
       <v-card-title class="text-h4 text-center mb-6 login-title">Login</v-card-title>
-      <v-form v-model="isValid" >
+      <v-form v-model="isValid" ref="formRef" >
         <v-text-field
-          v-model="form.name"
+          v-model="formData.name"
           label="Matricula"
           :counter="10"
           :rules="matriculaRules"
@@ -13,7 +13,7 @@
           required
         />
         <v-text-field
-          v-model="form.senha"
+          v-model="formData.senha"
           label="senha"
           :rules="passwordRules"
           variant="solo"
@@ -21,7 +21,7 @@
           required
         />
         <v-select
-          v-model="form.select"
+          v-model="formData.select"
           :items="items"
           label="Função"
           :rules="selectRules"
@@ -35,8 +35,8 @@
             :ripple="true"
             color="light-blue-accent-4"
             class="login-btn text-white text-none font-weight-bold"
-            :disabled="!isValid || loading"
             :loading="loading"
+            :disabled="loading"
             @click="submit"
             size="large"
             min-width="220"
@@ -45,6 +45,7 @@
             <v-icon
               start
               class="login-icon"
+              :loading="loading"
               icon="mdi-login"
             />
             Entrar
@@ -59,7 +60,10 @@
 import { ref } from 'vue'
 
 const isValid = ref(false)
-const form = ref({
+
+const formRef = ref()
+
+const formData = ref({
   name: '',
   senha: '',
   select: null,
@@ -79,14 +83,16 @@ const passwordRules = [
 ]
 
 const selectRules = [
-  (v: string | null) => !!v || 'Selecione um item',
+  (v: string | null) => !!v || 'Selecione sua funçao no sistema',
 ]
 
 
 
 function submit() {
-  if (!isValid.value) return
-  console.log('Form enviado:', form.value)
+  const isValid = formRef.value?.validate()
+  if (!isValid) return
+  
+  console.log('Form enviado:', formData.value)
 }
 
 const loading = ref(false)
