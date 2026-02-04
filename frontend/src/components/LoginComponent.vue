@@ -15,6 +15,7 @@
         <v-text-field
           v-model="formData.senha"
           label="senha"
+          type="password"
           :rules="passwordRules"
           variant="solo"
           class="mb-3"
