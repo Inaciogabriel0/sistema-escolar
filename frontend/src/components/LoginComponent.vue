@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="d-flex align-center justify-center" style="min-height: 100vh; background: linear-gradient(135deg, #FFEE58 0%, #0091EA 100%);">
+  <v-container fluid class="d-flex align-center justify-center" style="min-height: 100vh; background-color: #00B0FF;">
     <v-card class="pa-12 login-card-animate" elevation="10" max-width="600" width="100%" rounded="lg">
       <v-card-title class="text-h4 text-center mb-6 login-title">Login</v-card-title>
       <v-form v-model="isValid" ref="formRef" >
