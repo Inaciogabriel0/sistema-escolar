@@ -1,6 +1,9 @@
 <template>
   <v-app-bar color="light-blue-accent-4">
-    <v-icon @click="$emit('toggle-drawer')">
+    <v-icon
+    class="menu"
+    @click="$emit('toggle-drawer')" 
+    >
       mdi-menu
     </v-icon>
     <v-toolbar-title>School Express</v-toolbar-title>
@@ -21,3 +24,11 @@
 <script setup lang="ts">
 defineEmits(['toggle-drawer'])
 </script>
+
+<style>
+.menu {
+  cursor: pointer;
+  position: relative;
+  left: 10px;
+}
+</style>
