@@ -59,15 +59,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useSnackbarStore } from '../store/snackbar'
 
 const isValid = ref(false)
 
-const formRef = ref()
+const formRef = ref<any>(null)
 
 const formData = ref({
   name: '',
   senha: '',
-  select: null,
+  select: null as string | null,
   checkbox: false,
 })
 
@@ -89,14 +90,36 @@ const selectRules = [
 
 
 
-function submit() {
-  const isValid = formRef.value?.validate()
-  if (!isValid) return
-  
-  console.log('Form enviado:', formData.value)
+const snackbar = useSnackbarStore()
+const loading = ref(false)
+
+async function submit() {
+  const { valid } = await formRef.value.validate()
+
+  if (!valid) {
+    snackbar.error('Preencha os campos corretamente')
+    return
+  }
+
+  try {
+    loading.value = true
+    snackbar.startLoading('Entrando...')
+
+    // Simulação de requisição de login
+    // await api.post('/login', formData.value)
+
+    console.log('Form enviado:', formData.value)
+
+    snackbar.stopLoading()
+    snackbar.success('Login realizado com sucesso!')
+  } catch (error: any) {
+    snackbar.stopLoading()
+    snackbar.error('Erro ao realizar login')
+  } finally {
+    loading.value = false
+  }
 }
 
-const loading = ref(false)
 
 </script>
 
