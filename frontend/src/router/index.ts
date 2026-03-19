@@ -22,8 +22,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/LoginView.vue')
 
   },
+  {
+    path: '/Ver-camisa',
+    name: 'Ver-camisa',
+    component: () => import('@/views/VerCamisaView.vue')
+  }
 
-  
 ]
 
 const router = createRouter({
