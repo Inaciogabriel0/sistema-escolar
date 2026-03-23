@@ -1,5 +1,7 @@
  <template>
     <div>
+
+      <!--
         <v-container fluid class="d-flex align-center justify-center" >
         <v-card
     class="mx-auto"
@@ -11,6 +13,7 @@
       :src="imagem"
       cover
     >
+    
       <v-card-title class="text-black">
         camisas para seu ano letivo
       </v-card-title>
@@ -38,14 +41,26 @@
   </v-card>
          
         </v-container>
+        -->
+
     </div>
+   <Footer 
+   class="footer"
+   />
 </template>
 
 <script setup>
 import imagem from '@/assets/img/camisa-escolar.png';
+import Footer from '@/components/Footer/FooterComponent.vue';
+
 
 </script>
 
 <style scoped>
-   
+  .footer {
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+
+  } 
 </style>
