@@ -31,3 +31,27 @@
     'mdi-instagram',
   ]
 </script>
+<style scoped>
+ /* Footer */
+.footer {
+  margin-top: 40px;
+}
+.h2SS {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #0091EA;
+  margin-bottom: 20px;
+}
+.menu-card {
+  padding: 30px;
+  border-radius: 12px;
+  background-color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.menu-card:hover {
+  transform: translateY(-5px);
+}
+</style>

@@ -1,25 +1,28 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import GlobalSnackbar from './components/GlobalSnackbar.vue'
+
+
+const drawer = ref(false)
 </script>
 
 <template>
   <v-app>
-    <router-view />
+    <!-- ESCUTANDO O EVENTO -->
+  
+
+    <!-- DRAWER CONTROLADO -->
+    <v-navigation-drawer v-model="drawer">
+      <v-list>
+        <v-list-item title="Home" @click="$router.push('/')"/>
+        <v-list-item title="Horários" @click="$router.push('/horarios')"/>
+      </v-list>
+    </v-navigation-drawer>
+
     <GlobalSnackbar />
+
+    <v-main>
+      <router-view />
+    </v-main>
   </v-app>
 </template>
-
-<style>
-html,
-body,
-#app {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.v-app {
-  height: 100%;
-}
-</style>

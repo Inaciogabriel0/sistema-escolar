@@ -12,6 +12,16 @@ const routes: RouteRecordRaw[] = [
         name: 'home',
         component: () => import('@/views/HomeView.vue')
   },
+  {
+    path: '/Ver-camisa',
+    name: 'Ver-camisa',
+    component: () => import('@/views/VerCamisaView.vue')
+  },
+  {
+    path: '/Horarios',
+    name: 'Horarios',
+    component: () => import('@/views/HorariosView.vue')
+  }
 
     ]
 
@@ -22,11 +32,6 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/LoginView.vue')
 
   },
-  {
-    path: '/Ver-camisa',
-    name: 'Ver-camisa',
-    component: () => import('@/views/VerCamisaView.vue')
-  }
 
 ]
 
