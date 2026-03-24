@@ -6,7 +6,7 @@
     >
       mdi-menu
     </v-icon>
-    <v-toolbar-title>School Express</v-toolbar-title>
+    <v-toolbar-title>Adelino Dantas</v-toolbar-title>
 
      <!-- Login button -->
     <div class="butao_login">
