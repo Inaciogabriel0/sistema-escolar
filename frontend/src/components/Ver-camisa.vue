@@ -136,7 +136,7 @@
             size="small"
             @click="$router.push('/')"
           >
-            ← Continuar comprando
+            ← Voltar
           </v-btn>
         </v-col>
       </v-row>
