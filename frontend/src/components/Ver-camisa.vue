@@ -146,17 +146,18 @@
 
 <script setup>
 import { ref } from 'vue'
+import camisaImg from '@/assets/img/camisa-escolar-ad.jpg'
 
 // Product data (in a real app, this would come from an API)
 const product = ref({
   id: 1,
-  name: 'Camisa Polo Escolar',
+  name: 'Camisa Polo Escolar Adelino Dantas',
   reference: 'CP-001',
-  description: 'Camisa polo de alta qualidade, feita com algodão piquet confortável e durável. Possui gola em ribana e três botões na frente. Ideal para uso escolar diário.',
-  price: 89.90,
+  description: 'Camisa polo de alta qualidade, feita com algodão piquet confortável e durável. Possui gola em ribana, três botões na frente e emblema Adelino Dantas. Ideal para uso escolar diário.',
+  price: 45.00,
   inStock: true,
-  sizes: ['PP', 'P', 'M', 'G', 'GG', 'XG'],
-  image: '@/assets/img/camisa-escolar.png' // Using the existing shirt image
+  sizes: ['PP', 'P', 'M', 'G', 'GG'],
+  image: camisaImg
 })
 
 const selectedSize = ref('')
