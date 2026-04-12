@@ -3,11 +3,19 @@
     <v-card class="pa-12 login-card-animate" elevation="10" max-width="600" width="100%" rounded="lg">
       <v-card-title class="text-h4 text-center mb-6 login-title">Login</v-card-title>
       <v-form v-model="isValid" ref="formRef" >
+        <v-select
+          v-model="formData.select"
+          :items="items"
+          label="Função"
+          :rules="selectRules"
+          variant="solo"
+          class="mb-3"
+          required
+        />
         <v-text-field
           v-model="formData.name"
-          label="Matricula"
-          :counter="10"
-          :rules="matriculaRules"
+          :label="formData.select === 'aluno' ? 'Matricula' : 'E-mail'"
+          :rules="dynamicIdentityRules"
           variant="solo"
           class="mb-3"
           required
@@ -21,15 +29,7 @@
           class="mb-3"
           required
         />
-        <v-select
-          v-model="formData.select"
-          :items="items"
-          label="Função"
-          :rules="selectRules"
-          variant="solo"
-          class="mb-3"
-          required
-        />
+
 
         <div class="d-flex justify-center mt-6">
           <v-btn
@@ -58,9 +58,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useSnackbarStore } from '../store/snackbar'
+import { useAuthStore } from '../store/auth'
+import { api } from '../services/api'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+const authStore = useAuthStore()
 const isValid = ref(false)
 
 const formRef = ref<any>(null)
@@ -75,9 +80,17 @@ const formData = ref({
 const items = ['aluno', 'professor', 'administrador']
 
 const matriculaRules = [
-  (v: string) => !!v || 'Matricula é obrigatória',
-  (v: string) => v.length <= 10 || 'Máximo de 10 caracteres',
+  (v: string) => !!v || 'A Matrícula é obrigatória para alunos',
 ]
+
+const emailRules = [
+  (v: string) => !!v || 'O E-mail é obrigatório',
+  (v: string) => /.+@.+\..+/.test(v) || 'E-mail deve ser válido',
+]
+
+const dynamicIdentityRules = computed(() => {
+  return formData.value.select === 'aluno' ? matriculaRules : emailRules
+})
 
 const passwordRules = [
   (v: string) => !!v || 'Senha é obrigatória',
@@ -105,13 +118,37 @@ async function submit() {
     loading.value = true
     snackbar.startLoading('Entrando...')
 
-    // Simulação de requisição de login
-    // await api.post('/login', formData.value)
+    // Requisição real de login enviando a identidade, senha e role
+    const response = await api.post('/auth/login', {
+      identity: formData.value.name, // Pode ser matrícula ou email dependendo do select
+      password: formData.value.senha,
+      role: formData.value.select
+    });
 
-    console.log('Form enviado:', formData.value)
+    const token = response.data.access_token;
+    const user = response.data.user;
+    
+    // Salva o token no navegador
+    localStorage.setItem('@SchoolExpress:token', token);
+    localStorage.setItem('@SchoolExpress:user', JSON.stringify(user));
+    
+    // Salva na Store Global (Pinia)
+    authStore.setAuth(token, user);
+    
+    // Configura o Axios para automaticamente usar esse token depois
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+    console.log('Login realizado. Token salvo!');
 
     snackbar.stopLoading()
     snackbar.success('Login realizado com sucesso!')
+    
+    // Regra de Redirecionamento
+    if (formData.value.select === 'administrador') {
+      router.push('/admin') // Tela de admin informada
+    } else {
+      router.push('/') // Alunos e professores
+    }
   } catch (error: any) {
     snackbar.stopLoading()
     snackbar.error('Erro ao realizar login')
