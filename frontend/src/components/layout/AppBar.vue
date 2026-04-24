@@ -58,12 +58,18 @@ onMounted(() => {
   }
 })
 
-function logout() {
-  authStore.clearAuth()
-  localStorage.removeItem('@SchoolExpress:token')
-  localStorage.removeItem('@SchoolExpress:user')
-  api.defaults.headers.common['Authorization'] = ''
-  router.push('/login')
+async function logout() {
+  try {
+    await api.post('/auth/logout')
+  } catch (error) {
+    console.error('Logout error', error)
+  } finally {
+    authStore.clearAuth()
+    localStorage.removeItem('@SchoolExpress:token')
+    localStorage.removeItem('@SchoolExpress:user')
+    api.defaults.headers.common['Authorization'] = ''
+    router.push('/login')
+  }
 }
 </script>
 

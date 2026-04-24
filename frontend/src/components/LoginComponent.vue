@@ -23,11 +23,13 @@
         <v-text-field
           v-model="formData.senha"
           label="senha"
-          type="password"
+          :type="showPassword ? 'text' : 'password'"
           :rules="passwordRules"
           variant="solo"
           class="mb-3"
           required
+          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+          @click:append-inner="showPassword = !showPassword"
         />
 
 
@@ -67,6 +69,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const authStore = useAuthStore()
 const isValid = ref(false)
+const showPassword = ref(false)
 
 const formRef = ref<any>(null)
 
@@ -161,6 +164,7 @@ async function submit() {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@600&display=swap');
 
 @keyframes slideInUp {
   from {
@@ -243,8 +247,6 @@ async function submit() {
 .login-btn:hover:not(:disabled) .login-icon {
   animation: iconSpin 0.6s ease-in-out infinite;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@600&display=swap');
 
 .login-title {
   font-family: 'Playfair Display', serif;
