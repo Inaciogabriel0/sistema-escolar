@@ -1,154 +1,130 @@
 <template>
-  <div class="product-page">
-    <!-- Product Image -->
-    <v-container class="pa-0">
-      <v-row align="center" justify="center">
-        <v-col cols="12" sm="10" md="8" lg="6">
-          <v-img
-            :src="product.image"
-            height="400"
-            contain
-            class="mb-6"
-          />
-        </v-col>
-      </v-row>
-    </v-container>
+  <v-container fluid class="product-page py-8">
+    <v-row justify="center">
+      <v-col cols="12" md="10" lg="8">
+        <v-btn
+          variant="text"
+          color="primary"
+          prepend-icon="mdi-arrow-left"
+          class="text-none font-weight-bold mb-6 px-0 hover-lift"
+          @click="$router.push('/')"
+        >
+          Voltar para a Loja
+        </v-btn>
 
-    <!-- Product Details -->
-    <v-container>
-      <v-row>
-        <!-- Product Info -->
-        <v-col cols="12" sm="10" md="8" lg="6" class="mx-auto">
-          <h1 class="display-5 mb-4">{{ product.name }}</h1>
-
-          <v-row class="mb-4">
-            <v-col cols="6">
-              <p class="text-body-1"><strong>Referência:</strong> {{ product.reference }}</p>
+        <v-card class="glass-card rounded-xl border-0 overflow-hidden hover-lift-subtle" elevation="0">
+          <v-row no-gutters>
+            <!-- Product Image -->
+            <v-col cols="12" md="6" class="bg-surface-variant d-flex align-center justify-center pa-8" style="position: relative;">
+              <v-img
+                :src="product.image"
+                height="400"
+                class="rounded-lg elevation-4"
+                style="max-width: 100%; object-fit: contain;"
+              ></v-img>
             </v-col>
-            <v-col cols="6">
-              <p class="text-body-1"><strong>Disponibilidade:</strong>
-                <span v-if="product.inStock" class="success--text">Em estoque</span>
-                <span v-else class="error--text">Indisponível</span>
+
+            <!-- Product Details -->
+            <v-col cols="12" md="6" class="pa-8 d-flex flex-column justify-center">
+              <div class="mb-2 d-flex align-center justify-space-between">
+                <v-chip size="small" color="primary" variant="tonal" class="font-weight-bold">
+                  {{ product.reference }}
+                </v-chip>
+                <v-chip size="small" :color="product.inStock ? 'success' : 'error'" variant="flat" class="font-weight-bold">
+                  <v-icon start size="16">{{ product.inStock ? 'mdi-check-circle' : 'mdi-close-circle' }}</v-icon>
+                  {{ product.inStock ? 'Em estoque' : 'Indisponível' }}
+                </v-chip>
+              </div>
+
+              <h1 class="text-h4 font-weight-black text-primary mb-4">{{ product.name }}</h1>
+              
+              <p class="text-body-1 text-medium-emphasis mb-6" style="line-height: 1.6;">
+                {{ product.description }}
               </p>
+
+              <!-- Price -->
+              <div class="mb-6">
+                <span class="text-subtitle-2 text-medium-emphasis text-uppercase font-weight-bold">Preço</span>
+                <div class="text-h3 font-weight-black text-primary">R$ {{ product.price.toFixed(2).replace('.', ',') }}</div>
+              </div>
+
+              <v-divider class="mb-6"></v-divider>
+
+              <!-- Size Selection -->
+              <div class="mb-6">
+                <div class="d-flex align-center justify-space-between mb-3">
+                  <span class="text-subtitle-2 text-medium-emphasis text-uppercase font-weight-bold">Tamanho</span>
+                  <a href="#" class="text-caption text-primary text-decoration-none">Guia de tamanhos</a>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                  <v-btn
+                    v-for="(size, index) in product.sizes"
+                    :key="index"
+                    :variant="selectedSize === size ? 'flat' : 'outlined'"
+                    :color="selectedSize === size ? 'primary' : 'medium-emphasis'"
+                    class="rounded-lg font-weight-bold"
+                    min-width="60"
+                    @click="selectedSize = size"
+                    :disabled="!product.inStock"
+                  >
+                    {{ size }}
+                  </v-btn>
+                </div>
+              </div>
+
+              <!-- Quantity Selector -->
+              <div class="mb-8">
+                <span class="text-subtitle-2 text-medium-emphasis text-uppercase font-weight-bold mb-3 d-block">Quantidade</span>
+                <div class="d-inline-flex align-center bg-surface-variant rounded-lg pa-1">
+                  <v-btn
+                    icon="mdi-minus"
+                    variant="text"
+                    size="small"
+                    color="primary"
+                    @click="decrementQuantity"
+                    :disabled="quantity <= 1 || !product.inStock"
+                  ></v-btn>
+                  <span class="text-h6 font-weight-bold px-6">{{ quantity }}</span>
+                  <v-btn
+                    icon="mdi-plus"
+                    variant="text"
+                    size="small"
+                    color="primary"
+                    @click="incrementQuantity"
+                    :disabled="quantity >= 10 || !product.inStock"
+                  ></v-btn>
+                </div>
+              </div>
+
+              <!-- Add to Cart Button -->
+              <v-btn
+                color="primary"
+                size="x-large"
+                rounded="pill"
+                block
+                class="text-none font-weight-bold hover-lift shadow-primary"
+                @click="addToCart"
+                :disabled="!product.inStock || !selectedSize"
+                :loading="isAddingToCart"
+              >
+                <template v-slot:prepend>
+                  <v-icon>mdi-cart-plus</v-icon>
+                </template>
+                Adicionar ao Carrinho
+              </v-btn>
             </v-col>
           </v-row>
-
-          <p class="text-body-2 mb-6">{{ product.description }}</p>
-
-          <!-- Price -->
-          <div class="mb-6">
-            <p class="text-h5 mb-2">Preço</p>
-            <p class="display-4 text-primary">R$ {{ product.price.toFixed(2) }}</p>
-          </div>
-
-          <!-- Size Selection -->
-          <div class="mb-6">
-            <p class="text-h5 mb-2">Tamanho</p>
-            <v-row>
-              <v-col
-                v-for="(size, index) in product.sizes"
-                :key="index"
-                cols="12"
-                sm="6"
-                md="3"
-                class="mb-2"
-              >
-                <v-btn
-                  variant="outlined"
-                  color="primary"
-                  size="small"
-                  class="ma-1"
-                  :class="{
-                    'primary--text': selectedSize === size,
-                    'border': selectedSize !== size
-                  }"
-                  @click="selectedSize = size"
-                  :disabled="!product.inStock"
-                >
-                  {{ size }}
-                </v-btn>
-              </v-col>
-            </v-row>
-          </div>
-
-          <!-- Quantity Selector -->
-          <div class="mb-6">
-            <p class="text-h5 mb-2">Quantidade</p>
-            <v-row align="center">
-              <v-col cols="auto">
-                <v-btn
-                  variant="outlined"
-                  color="primary"
-                  size="small"
-                  class="mr-2"
-                  @click="decrementQuantity"
-                  :disabled="quantity <= 1 || !product.inStock"
-                >
-                  <v-icon>mdi-minus</v-icon>
-                </v-btn>
-              </v-col>
-              <v-col cols="auto">
-                <p class="text-h6 mb-0 mx-4">{{ quantity }}</p>
-              </v-col>
-              <v-col cols="auto">
-                <v-btn
-                  variant="outlined"
-                  color="primary"
-                  size="small"
-                  class="ml-2"
-                  @click="incrementQuantity"
-                  :disabled="quantity >= 10 || !product.inStock"
-                >
-                  <v-icon>mdi-plus</v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>
-          </div>
-
-          <!-- Add to Cart Button -->
-          <v-btn
-            color="primary"
-            size="large"
-            block
-            class="mb-4"
-            @click="addToCart"
-            :disabled="!product.inStock || selectedSize === ''"
-          >
-            <template v-if="isAddingToCart">
-              <v-progress-circular
-                indeterminate
-                size="20"
-                color="white"
-                class="mr-2"
-              />
-              Adicionando...
-            </template>
-            <template v-else>
-              <v-icon left>mdi-cart-plus</v-icon>
-              Adicionar ao carrinho
-            </template>
-          </v-btn>
-
-          <!-- Continue Shopping -->
-          <v-btn
-            variant="text"
-            color="primary"
-            size="small"
-            @click="$router.push('/')"
-          >
-            ← Voltar
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import camisaImg from '@/assets/img/camisa-escolar-ad.jpg'
 
-// Product data (in a real app, this would come from an API)
+// Product data
 const product = ref({
   id: 1,
   name: 'Camisa Polo Escolar Adelino Dantas',
@@ -181,25 +157,10 @@ const addToCart = () => {
 
   isAddingToCart.value = true
 
-  // Simulate API call
   setTimeout(() => {
-    // In a real app, you would send this to your cart API
-    const cartItem = {
-      id: product.value.id,
-      name: product.value.name,
-      reference: product.value.reference,
-      price: product.value.price,
-      size: selectedSize.value,
-      quantity: quantity.value,
-      image: product.value.image
-    }
-
-    // For now, we'll just show a success message
-    // You would typically use a store (like Vuex/Pinia) or emit an event
-    alert(`Produto adicionado ao carrinho!\n${product.value.name} - Tamanho: ${selectedSize.value} - Quantidade: ${quantity.value}`)
+    alert(`Produto adicionado ao carrinho!\n${product.value.name}\nTamanho: ${selectedSize.value}\nQuantidade: ${quantity.value}`)
 
     isAddingToCart.value = false
-    // Reset form after adding to cart
     selectedSize.value = ''
     quantity.value = 1
   }, 1000)
@@ -208,51 +169,24 @@ const addToCart = () => {
 
 <style scoped>
 .product-page {
-  background-color: #f8f9fa;
-  min-height: calc(100vh - 64px); /* Account for app bar */
+  background: radial-gradient(circle at top left, rgba(99, 102, 241, 0.05), transparent 40%),
+              radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.05), transparent 40%);
+  min-height: calc(100vh - 64px);
 }
 
-.v-img {
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.hover-lift-subtle {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-lift-subtle:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08) !important;
 }
 
-.v-btn {
-  border-radius: 8px;
-  text-transform: none;
-  transition: all 0.2s ease;
+.shadow-primary {
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3) !important;
 }
 
-.v-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.v-btn:active {
-  transform: translateY(0);
-}
-
-.v-progress-circular {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .product-page {
-    padding-bottom: 20px;
-  }
-
-  .v-img {
-    height: 300px;
-  }
-
-  .display-5 {
-    font-size: 1.8rem;
-  }
-
-  .display-4 {
-    font-size: 2.2rem;
-  }
+.gap-2 {
+  gap: 8px;
 }
 </style>
