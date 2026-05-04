@@ -7,7 +7,7 @@
       mdi-menu
     </v-icon>
 
-    <v-toolbar-title>Adelino Dantas</v-toolbar-title>
+    <v-toolbar-title>School Express</v-toolbar-title>
 
     <div class="butao_login d-flex align-center pr-4">
       <template v-if="authStore.isAuthenticated">
