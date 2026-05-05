@@ -74,9 +74,6 @@ import PerfilSection from './sections/PerfilSection.vue';
 import PrivacSegurancaSection from './sections/PrivacSegurancaSection.vue';
 import NotificacoesSection from './sections/NotificacoesSection.vue';
 import AparenciaSection from './sections/AparenciaSection.vue';
-import AcademicoSection from './sections/AcademicoSection.vue';
-import ComunicacaoSection from './sections/ComunicacaoSection.vue';
-import InstitutionalSection from './sections/InstitutionalSection.vue';
 import ContaSection from './sections/ContaSection.vue';
 
 export default {
@@ -86,9 +83,6 @@ export default {
     PrivacSegurancaSection,
     NotificacoesSection,
     AparenciaSection,
-    AcademicoSection,
-    ComunicacaoSection,
-    InstitutionalSection,
     ContaSection
   },
   data() {
@@ -99,9 +93,6 @@ export default {
         { id: 'privac-seguranca', title: 'Privacidade e Segurança', icon: 'mdi-shield-lock', component: PrivacSegurancaSection },
         { id: 'notificacoes', title: 'Notificações', icon: 'mdi-bell', component: NotificacoesSection },
         { id: 'aparencia', title: 'Aparência', icon: 'mdi-palette', component: AparenciaSection },
-        { id: 'academico', title: 'Acadêmico', icon: 'mdi-school', component: AcademicoSection },
-        { id: 'comunicacao', title: 'Comunicação', icon: 'mdi-chat-processing', component: ComunicacaoSection },
-        { id: 'institucional', title: 'Institucional', icon: 'mdi-building', component: InstitutionalSection },
         { id: 'conta', title: 'Conta', icon: 'mdi-account-off', component: ContaSection }
       ]
     };
