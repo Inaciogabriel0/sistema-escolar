@@ -35,7 +35,6 @@ const emit = defineEmits<{
 
 const menuItems = [
   { title: 'Início', icon: 'mdi-home', route: '/' },
-  { title: 'Turma', icon: 'mdi-google-classroom', route: '/turma' },
   { title: 'Horários', icon: 'mdi-calendar-clock', route: '/horarios' },
   { title: 'Configurações', icon: 'mdi-cog', route: '/configuracoes' },
    {title: 'Farda', icon: 'mdi-cart', route: '/Ver-camisa'}
